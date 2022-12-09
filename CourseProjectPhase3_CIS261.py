@@ -43,25 +43,25 @@ def printinfo(DetailsPrinted):
         except ValueError:
             print("Invalid date format. Try again. ")
             print()
-            continue
+            continue  # skip next if statement and re-start loop
     while True:
         EmpDetail = EmpFile.readline()
         if not EmpDetail:
             break
-        EmpDetail = EmpDetail.replace("|n", "") #remove carriage return from end of ine
+        EmpDetail = EmpDetail.replace("\n", "") #remove carriage return from end of line
         EmpList = EmpDetail.split("|")
         fromdate = EmpList[0]
         if (str(rundate).upper() != "ALL"):
             checkdate = datetime.strptime(fromdate, "%m/%d/%Y")
             if (checktime < rundate):
                 continue
-
+        EmpList = EmpDetail.split("|")
         fromdate = EmpList[0]
         if (str(rundate).upper() != "ALL"):
              checkdate = datetime.strptime(fromdate, "%m/%d/%Y")
         if (checkdate < rundate):
             continue
-
+#############################################################################
         todate = EmpList[1]
         empname = EmpList[2]
         hours = float(EmpList[3])
@@ -80,8 +80,8 @@ def printinfo(DetailsPrinted):
         EmpTotals["TotGrossPay"] = TotGrossPay
         EmpTotals["TotTax"] = TotTax
         EmpTotals["TotNetPay"] = TotNetPay
-        DetailsPrinted = True
-    if (DetailsPrinted):
+        DetailsPrinted = True  ########################
+    if (DetailsPrinted):   #skip of no detail lines printed
         PrintTotals (EmpTotals)
     else:
         print("No detail information to print")
@@ -93,7 +93,7 @@ def PrintTotals(EmpTotals):
     print(f'Total Net Pay: {EmpTotals["TotNetPay"]:,.2f}')
 
 if __name__ == "__main__":
-    Empfile = open("Employees.txt", "a")#############
+    EmpFile = open("Employees.txt", "a")#############
     #EmpDetailList = []
     EmpTotals = {}
     DetailsPrinted = False
@@ -109,5 +109,5 @@ if __name__ == "__main__":
         EmpDetail = fromdate + "|" + todate + "|" + empname + "|" + str(hours) + "|" + str(hourlyrate) + "|" + str(taxrate) + "\n"
         EmpFile.write(EmpDetail)
     #close file to save data
-    Empfile.close()
+    EmpFile.close()
     printinfo(DetailsPrinted)
